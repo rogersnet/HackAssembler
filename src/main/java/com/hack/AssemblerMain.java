@@ -147,7 +147,7 @@ public class AssemblerMain {
     }
 
     private String generateCInsMc(CommandLine instr){
-        return "1" + cMap.getCompCode(instr.getCompMnemonic()) +
+        return "111" + cMap.getCompCode(instr.getCompMnemonic()) +
                 cMap.getDestCode(instr.getDestMnemonic()) +
                 cMap.getJumpCode(instr.getJumpMnemonic());
     }

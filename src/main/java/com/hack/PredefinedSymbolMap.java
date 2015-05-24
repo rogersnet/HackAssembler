@@ -40,7 +40,7 @@ public class PredefinedSymbolMap {
     private PredefinedSymbolMap(){}
 
     public static PredefinedSymbolMap getInstance(){
-        if(instance != null){
+        if(instance == null){
             instance = new PredefinedSymbolMap();
         }
         return instance;

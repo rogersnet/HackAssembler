@@ -32,6 +32,10 @@ class HackOutputArrayStream implements MachineCodeStreamOut {
     public void delete(){
         outHack.clear();
     }
+
+    public List<String> getFinalConvCode(){
+        return this.outHack;
+    }
 }
 
 public class AssemblerMainTest {
@@ -41,12 +45,27 @@ public class AssemblerMainTest {
     @Before
     public void setUp(){
         arrayStreamOut = new HackOutputArrayStream();
-        jackasm = new AssemblerMain("src/test/resources/sample.asm");
+        jackasm = new AssemblerMain("src/test/resources/sample.asm", arrayStreamOut);
     }
 
     @Test
     public void createAndCheckObject(){
         assertNotNull(jackasm);
+    }
+
+    @Test
+    public void checkConvertedCode(){
+        //build expected list
+        List<String> expOut = new ArrayList<String>();
+        expOut.add("0000000000000000");
+        expOut.add("1111110000010000");
+
+        jackasm.asmToBinary();
+
+        HackOutputArrayStream arrayOut = (HackOutputArrayStream) arrayStreamOut;
+        List<String> actualOut = arrayOut.getFinalConvCode();
+
+        assertArrayEquals(expOut.toArray(),actualOut.toArray());
     }
 
 }
