@@ -14,6 +14,10 @@ public class HackOutputFileManager implements MachineCodeStreamOut {
 
     public HackOutputFileManager(){}
 
+    /**
+     * Initialize FileWriter and BufferedWriter for the file path provided
+     * @param path
+     */
     public void initialize(String path) {
         try{
             outH = new File(path);
@@ -29,6 +33,11 @@ public class HackOutputFileManager implements MachineCodeStreamOut {
         }
     }
 
+    /**
+     * Write the machine code to the output file
+     * @param machineCode
+     * @throws ProcessingException
+     */
     public void write(String machineCode) throws ProcessingException {
         try {
             this.bufferedWr.write(machineCode);
@@ -38,6 +47,9 @@ public class HackOutputFileManager implements MachineCodeStreamOut {
         }
     }
 
+    /**
+     * Close all open buffered writer streams
+     */
     public void close(){
         try {
             if (bufferedWr != null)
@@ -47,6 +59,9 @@ public class HackOutputFileManager implements MachineCodeStreamOut {
         }
     }
 
+    /**
+     * Delete the file incase of any exception, should not generated partially assembled files.
+     */
     public void delete() {
         if(outH != null){
             outH.delete();

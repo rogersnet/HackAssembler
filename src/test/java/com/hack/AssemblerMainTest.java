@@ -65,7 +65,30 @@ public class AssemblerMainTest {
         HackOutputArrayStream arrayOut = (HackOutputArrayStream) arrayStreamOut;
         List<String> actualOut = arrayOut.getFinalConvCode();
 
-        assertArrayEquals(expOut.toArray(),actualOut.toArray());
+        assertArrayEquals(expOut.toArray(), actualOut.toArray());
+    }
+
+    @Test
+    public void createAndCheckAdditionOfTwoNumbers(){
+        jackasm = new AssemblerMain("src/test/resources/add.asm", arrayStreamOut);
+
+        //build expected output
+        List<String> expOut = new ArrayList<String>();
+        expOut.add("0000000000000000");
+        expOut.add("1111110000010000");
+        expOut.add("0000000000000001");
+        expOut.add("1111000010010000");
+        expOut.add("0000000000000010");
+        expOut.add("1110001100001000");
+        expOut.add("0000000000000110");
+        expOut.add("1110101010000111");
+
+        jackasm.asmToBinary();
+
+        HackOutputArrayStream arrayOut = (HackOutputArrayStream) arrayStreamOut;
+        List<String> actualOut = arrayOut.getFinalConvCode();
+
+        assertArrayEquals(expOut.toArray(), actualOut.toArray());
     }
 
 }

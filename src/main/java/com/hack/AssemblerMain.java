@@ -33,6 +33,11 @@ public class AssemblerMain {
         this.streamOut.initialize(file);
     }
 
+    public static void main(String[] args){
+        AssemblerMain jasm = new AssemblerMain(args[0]);
+        jasm.asmToBinary();
+    }
+
     /**
      * Processes the given input file in two passes
      * In the first pass, it parses each line and
@@ -80,12 +85,18 @@ public class AssemblerMain {
         }
     }
 
+    /**
+     * Second Pass: Focus on variables and convert each instruction to corresponding machine code
+     * @throws ProcessingException
+     */
     private void processPassSecond() throws ProcessingException {
         try {
             Parser hParser = new Parser(this.asmFile);
-            int rowNumber = 0;
             while (hParser.hasMoreCommands()) {
+                //move the parser one line
                 hParser.advance();
+
+                //read the current command line instruction
                 CommandLine instr = hParser.getCurrentCommand();
 
                 String machineCode = "";
@@ -103,6 +114,7 @@ public class AssemblerMain {
                         break;
                 }
 
+                //once the machine code is generated, write it to the output stream
                 if(!machineCode.isEmpty()){
                     streamOut.write(machineCode);
                 }
@@ -114,6 +126,10 @@ public class AssemblerMain {
         }
     }
 
+    /**
+     * @param instr - Hack assembly A instruction
+     * @return - corresponding machine language equivalent
+     */
     private String generateAInsMc(CommandLine instr){
         String symbol  = instr.getSymbol();
         String macCode = "0";
@@ -146,21 +162,25 @@ public class AssemblerMain {
         return macCode;
     }
 
+    /**
+     * @param instr - Hack assembly C instruction
+     * @return - corresponding machine language equivalent
+     */
     private String generateCInsMc(CommandLine instr){
         return "111" + cMap.getCompCode(instr.getCompMnemonic()) +
                 cMap.getDestCode(instr.getDestMnemonic()) +
                 cMap.getJumpCode(instr.getJumpMnemonic());
     }
 
+    /**
+     * @param number - a string representing a number
+     * @return - a binary equivalent of the number padded with zeros to ensure the length is 16
+     * @throws NumberFormatException
+     */
     private String intTo16BitBinary(String number) throws NumberFormatException{
         Integer iconst   = Integer.parseInt(number);
         String binString = Integer.toBinaryString(iconst);
         return String.format("%16s",binString).replace(" ","0");
-    }
-
-    public static void main(String[] args){
-        AssemblerMain jasm = new AssemblerMain(args[0]);
-        jasm.asmToBinary();
     }
 
 }

@@ -30,6 +30,10 @@ public class Parser {
         initFileBufferStream();
     }
 
+    /**
+     * Set the current reader stream to the beginning
+     * @throws IOException
+     */
     private void initFileBufferStream() throws IOException{
         this.fileH  = new FileReader(this.fileName);
         this.buffR  = new BufferedReader(this.fileH);
@@ -37,6 +41,11 @@ public class Parser {
         moveFilePointer();
     }
 
+    /**
+     * Move the File pointer to the next line.
+     * Set EOFMarker based on if there is more data to be read.
+     * @throws IOException
+     */
     private void moveFilePointer() throws IOException{
         this.nextLine = this.buffR.readLine();
         if (this.nextLine != null) {
@@ -47,12 +56,28 @@ public class Parser {
         }
     }
 
+    /**
+     * @return True/False based on the value of EOFMarker
+     */
     public boolean hasMoreCommands(){
         return !this.EOFMarker;
     }
 
+    /**
+     * Move the file pointer to the next line.
+     * Set the current line to the one previously read.
+     * Also remove any inline comments
+     */
     public void advance(){
-        this.currentLine.setAssemblyString(this.nextLine.trim());
+        String currentCommand = this.nextLine.trim();
+
+        //check if the current command contains some inline comment
+        if(currentCommand.indexOf("//") > 0){
+            currentCommand = currentCommand.substring(0,currentCommand.indexOf("//"));
+            currentCommand = currentCommand.trim();
+        }
+
+        this.currentLine.setAssemblyString(currentCommand);
         try {
             moveFilePointer();
         }catch (IOException ex){
