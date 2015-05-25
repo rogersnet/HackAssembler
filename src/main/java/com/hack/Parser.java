@@ -77,7 +77,10 @@ public class Parser {
             currentCommand = currentCommand.trim();
         }
 
+        //remove all whitespaces from the string
+        currentCommand = currentCommand.replaceAll("\\s","");
         this.currentLine.setAssemblyString(currentCommand);
+
         try {
             moveFilePointer();
         }catch (IOException ex){

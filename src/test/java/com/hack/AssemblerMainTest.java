@@ -91,4 +91,42 @@ public class AssemblerMainTest {
         assertArrayEquals(expOut.toArray(), actualOut.toArray());
     }
 
+    @Test
+    public void createAndCheckMultOfTwoNumbers(){
+        jackasm = new AssemblerMain("src/test/resources/mult.asm", arrayStreamOut);
+
+        //build expected output
+        List<String> expOut = new ArrayList<String>();
+        expOut.add("0000000000000000");
+        expOut.add("1110110000010000");
+        expOut.add("0000000000000010");
+        expOut.add("1110001100001000");
+        expOut.add("0000000000000001");
+        expOut.add("1111110000010000");
+        expOut.add("0000000000010101");
+        expOut.add("1110001100000010");
+        expOut.add("0000000000000001");
+        expOut.add("1111110000010000");
+        expOut.add("0000000000010000");
+        expOut.add("1110001100001000");
+        expOut.add("0000000000000000");
+        expOut.add("1111110000010000");
+        expOut.add("0000000000000010");
+        expOut.add("1111000010001000");
+        expOut.add("0000000000010000");
+        expOut.add("1111110000010000");
+        expOut.add("1110001110001000");
+        expOut.add("0000000000001100");
+        expOut.add("1110001110000001");
+        expOut.add("0000000000010101");
+        expOut.add("1110101010000111");
+
+        jackasm.asmToBinary();
+
+        HackOutputArrayStream arrayOut = (HackOutputArrayStream) arrayStreamOut;
+        List<String> actualOut = arrayOut.getFinalConvCode();
+
+        assertArrayEquals(expOut.toArray(), actualOut.toArray());
+    }
+
 }
